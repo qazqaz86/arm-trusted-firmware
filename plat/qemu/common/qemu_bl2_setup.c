@@ -101,6 +101,26 @@ static void update_dt(void)
 		return;
 	}
 
+	/*
+	 * QEMU with secure=on sets stdout-path to the secure UART
+	 * (pl011@9040000). Linux runs at EL2 (non-secure) and cannot
+	 * access the secure UART, so redirect stdout-path to the
+	 * non-secure UART (pl011@9000000 = ttyAMA0).
+	 */
+	{
+		int chosen_offset = fdt_path_offset(fdt, "/chosen");
+
+		if (chosen_offset >= 0) {
+			ret = fdt_setprop_string(fdt, chosen_offset,
+				"stdout-path",
+				"/pl011@9000000");
+			if (ret < 0)
+				WARN("Failed to update stdout-path: %d\n", ret);
+			else
+				INFO("DTB: stdout-path set to /pl011@9000000\n");
+		}
+	}
+
 #if ENABLE_RMM
 	if (fdt_add_reserved_memory(fdt, "rmm", REALM_DRAM_BASE,
 				    REALM_DRAM_SIZE)) {
