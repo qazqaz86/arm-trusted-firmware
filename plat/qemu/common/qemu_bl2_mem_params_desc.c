@@ -209,8 +209,15 @@ static bl_mem_params_node_t bl2_mem_params_descs[] = {
 	  SET_STATIC_PARAM_HEAD(image_info, PARAM_EP, VERSION_2, image_info_t,
 				IMAGE_ATTRIB_SKIP_LOADING),
 # else /* PRELOADED_BL33_BASE */
-	  .ep_info.pc = NS_IMAGE_OFFSET,
 
+#if defined(BL33_EDK2_UEFI_ENTRY_OFFSET) && (BL33_EDK2_UEFI_ENTRY_OFFSET != 0)
+xxx
+		/* Sec EntryPoint = QEMU.EFI + BL33_EDK2_UEFI_ENTRY_OFFSET */
+		.ep_info.pc = NS_IMAGE_OFFSET + BL33_EDK2_UEFI_ENTRY_OFFSET,
+#else
+uuu
+		.ep_info.pc = NS_IMAGE_OFFSET,
+#endif
 	  SET_STATIC_PARAM_HEAD(image_info, PARAM_EP, VERSION_2, image_info_t,
 				0),
 	  .image_info.image_base = NS_IMAGE_OFFSET,

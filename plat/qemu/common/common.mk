@@ -169,4 +169,12 @@ ifeq (${HOB_LIST}, 1)
 include lib/hob/hob.mk
 endif
 
+ifneq ($(BL33_EDK2_UEFI_ENTRY_OFFSET),)
+    $(eval $(call add_define,BL33_EDK2_UEFI_ENTRY_OFFSET))
+endif#(BL33_EDK2_UEFI_ENTRY_OFFSET)
+
+.PHONY: BL33_EDK2_UEFI_ENTRY_OFFSET
+BL33_EDK2_UEFI_ENTRY_OFFSET:
+	@:
+
 endif
