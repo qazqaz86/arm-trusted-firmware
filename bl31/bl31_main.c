@@ -199,7 +199,7 @@ void __no_pauth bl31_main(u_register_t arg0, u_register_t arg1, u_register_t arg
 			WARN("BL31: BL32 initialization failed\n");
 		}
 	}
-
+	INFO("BL31: Initializing BL32 end\n");
 	/*
 	 * If RME is enabled and init hook is registered, initialize RMM
 	 * in R-EL2.
@@ -222,7 +222,7 @@ void __no_pauth bl31_main(u_register_t arg0, u_register_t arg1, u_register_t arg
 	 * corresponding to the desired security state after the next ERET.
 	 */
 	bl31_prepare_next_image_entry();
-
+	INFO("BL31: %s, %d\n", __func__, __LINE__);
 	/*
 	 * Perform any platform specific runtime setup prior to cold boot exit
 	 * from BL31

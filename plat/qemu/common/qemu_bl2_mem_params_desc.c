@@ -212,14 +212,18 @@ static bl_mem_params_node_t bl2_mem_params_descs[] = {
 
 #if defined(BL33_EDK2_UEFI_ENTRY_OFFSET) && (BL33_EDK2_UEFI_ENTRY_OFFSET != 0)
 		/* Sec EntryPoint = QEMU.EFI + BL33_EDK2_UEFI_ENTRY_OFFSET */
-		.ep_info.pc = NS_IMAGE_OFFSET + BL33_EDK2_UEFI_ENTRY_OFFSET,
+        .ep_info.pc = NS_IMAGE_OFFSET + BL33_EDK2_UEFI_ENTRY_OFFSET,
+	    SET_STATIC_PARAM_HEAD(image_info, PARAM_EP, VERSION_2, image_info_t, 0),
+        .image_info.image_base = NS_IMAGE_OFFSET,
+        .image_info.image_max_size = NS_IMAGE_MAX_SIZE,
 #else
 		.ep_info.pc = NS_IMAGE_OFFSET,
-#endif
-	  SET_STATIC_PARAM_HEAD(image_info, PARAM_EP, VERSION_2, image_info_t,
+
+	    SET_STATIC_PARAM_HEAD(image_info, PARAM_EP, VERSION_2, image_info_t,
 				0),
-	  .image_info.image_base = NS_IMAGE_OFFSET,
-	  .image_info.image_max_size = NS_IMAGE_MAX_SIZE,
+	    .image_info.image_base = NS_IMAGE_OFFSET,
+	    .image_info.image_max_size = NS_IMAGE_MAX_SIZE,
+#endif
 # endif /* !PRELOADED_BL33_BASE */
 
 	  .next_handoff_image_id = INVALID_IMAGE_ID,
